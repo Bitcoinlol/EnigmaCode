@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: enigmacode-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-enigmacode123}
+      MONGO_INITDB_DATABASE: enigmacode
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - enigmacode-network
+
+  # Redis for Caching (Optional)
+  redis:
+    image: redis:7.2-alpine
+    container_name: enigmacode-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - enigmacode-network
+
+  # EnigmaCode Backend API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: enigmacode-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://admin:enigmacode123@mongodb:27017/enigmacode?authSource=admin
+      JWT_SECRET: ${JWT_SECRET}
+      OBFUSCATION_API_KEY: ${OBFUSCATION_API_KEY}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      LOADER_INTEGRITY_KEY: ${LOADER_INTEGRITY_KEY}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET}
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 100
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - enigmacode-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: enigmacode-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - api
+    networks:
+      - enigmacode-network
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  enigmacode-network:
+    driver: bridge

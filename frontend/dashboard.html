@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EnigmaCode</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>EnigmaCode</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-tab="dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#projects" class="nav-link" data-tab="projects">
+                            <i class="fas fa-folder"></i>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#keys" class="nav-link" data-tab="keys">
+                            <i class="fas fa-key"></i>
+                            <span>Keys</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#users" class="nav-link" data-tab="users">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analytics" class="nav-link" data-tab="analytics">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#api" class="nav-link" data-tab="api">
+                            <i class="fas fa-code"></i>
+                            <span>API</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#settings" class="nav-link" data-tab="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-plan" id="userPlan">Free Plan</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">Welcome back! Here's your account overview.</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-secondary" onclick="refreshData()">
+                        <i class="fas fa-refresh"></i>
+                        Refresh
+                    </button>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalProjects">0</div>
+                            <div class="stat-label">Total Scripts</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalActiveUsers">0</div>
+                            <div class="stat-label">Total Active Users</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalKeys">0</div>
+                            <div class="stat-label">Total Keys Created</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalBannedUsers">0</div>
+                            <div class="stat-label">Total Keys Banned</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Activity Feed</h3>
+                            <button class="btn-secondary btn-sm" onclick="refreshActivityFeed()">
+                                <i class="fas fa-refresh"></i>
+                            </button>
+                        </div>
+                        <div class="activity-feed" id="activityFeed">
+                            <div class="activity-item">
+                                <div class="activity-icon success">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Key validated successfully</div>
+                                    <div class="activity-time">2 minutes ago</div>
+                                </div>
+                            </div>
+                            <!-- More activity items will be loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Usage Overview</h3>
+                            <select class="form-input" id="usageTimeframe" onchange="updateUsageChart()">
+                                <option value="7d">Last 7 days</option>
+                                <option value="30d">Last 30 days</option>
+                                <option value="90d">Last 90 days</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="usageChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="showTab('projects')">
+                            <i class="fas fa-plus"></i>
+                            Create Project
+                        </button>
+                        <button class="btn-secondary" onclick="showTab('keys')">
+                            <i class="fas fa-key"></i>
+                            Generate Key
+                        </button>
+                        <button class="btn-secondary" onclick="showTab('analytics')">
+                            <i class="fas fa-chart-bar"></i>
+                            View Analytics
+                        </button>
+                        <button class="btn-secondary" onclick="showTab('api')">
+                            <i class="fas fa-code"></i>
+                            API Docs
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Tab -->
+            <div id="projects-tab" class="tab-content">
+                <div class="tab-header">
+                    <div class="tab-title">
+                        <h2>Projects</h2>
+                        <p>Manage your Lua scripts and obfuscation settings</p>
+                    </div>
+                    <button class="btn-primary" onclick="showCreateProjectModal()">
+                        <i class="fas fa-plus"></i>
+                        Create Project
+                    </button>
+                </div>
+
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Projects will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Keys Tab -->
+            <div id="keys-tab" class="tab-content">
+                <div class="tab-header">
+                    <div class="tab-title">
+                        <h2>License Keys</h2>
+                        <p>Manage and monitor your license keys</p>
+                    </div>
+                    <button class="btn-primary" onclick="showCreateKeyModal()">
+                        <i class="fas fa-plus"></i>
+                        Create Key
+                    </button>
+                </div>
+
+                <div class="keys-filters">
+                    <div class="filter-group">
+                        <input type="text" class="form-input" placeholder="Search keys..." id="keysSearch">
+                        <select class="form-input" id="keysStatusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="banned">Banned</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                        <select class="form-input" id="keysProjectFilter">
+                            <option value="">All Projects</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="keys-table-container">
+                    <table class="data-table" id="keysTable">
+                        <thead>
+                            <tr>
+                                <th>Key String</th>
+                                <th>Status</th>
+                                <th>Project</th>
+                                <th>Created</th>
+                                <th>Expires</th>
+                                <th>Last Used</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="keysTableBody">
+                            <!-- Keys will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users-tab" class="tab-content">
+                <div class="tab-header">
+                    <div class="tab-title">
+                        <h2>Users</h2>
+                        <p>Monitor and manage platform users</p>
+                    </div>
+                </div>
+
+                <div class="users-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="uniqueUsers">0</div>
+                        <div class="stat-label">Unique Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeUsers">0</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="bannedUsers">0</div>
+                        <div class="stat-label">Banned Users</div>
+                    </div>
+                </div>
+
+                <div class="users-table-container">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>First Seen</th>
+                                <th>Last Active</th>
+                                <th>Total Activations</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analytics-tab" class="tab-content">
+                <div class="tab-header">
+                    <div class="tab-title">
+                        <h2>Analytics</h2>
+                        <p>Detailed insights into your platform usage</p>
+                    </div>
+                    <select class="form-input" id="analyticsTimeframe">
+                        <option value="7d">Last 7 days</option>
+                        <option value="30d">Last 30 days</option>
+                        <option value="90d">Last 90 days</option>
+                    </select>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Usage Graphs</h3>
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Error Distribution</h3>
+                        <canvas id="errorChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <h3>Error & Tamper Log</h3>
+                    <div class="log-container" id="errorLog">
+                        <!-- Error logs will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Tab -->
+            <div id="api-tab" class="tab-content">
+                <div class="tab-header">
+                    <div class="tab-title">
+                        <h2>API Management</h2>
+                        <p>Manage your API keys and view documentation</p>
+                    </div>
+                    <button class="btn-primary" onclick="showCreateApiKeyModal()">
+                        <i class="fas fa-plus"></i>
+                        Create API Key
+                    </button>
+                </div>
+
+                <div class="api-keys-section">
+                    <h3>Your API Keys</h3>
+                    <div class="api-keys-list" id="apiKeysList">
+                        <!-- API keys will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="api-docs-section">
+                    <h3>Interactive Documentation</h3>
+                    <div class="docs-container" id="apiDocs">
+                        <!-- API documentation will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="tab-header">
+                    <div class="tab-title">
+                        <h2>Settings</h2>
+                        <p>Manage your account and preferences</p>
+                    </div>
+                </div>
+
+                <div class="settings-sections">
+                    <div class="settings-card">
+                        <h3>Account Settings</h3>
+                        <form id="accountSettingsForm">
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-input" id="settingsEmail" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-input" id="settingsUsername" name="username" readonly>
+                            </div>
+                            <button type="submit" class="btn-primary">Update Account</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Change Password</h3>
+                        <form id="passwordChangeForm">
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-input" name="currentPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-input" name="newPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-input" name="confirmPassword" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Change Password</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Integrations</h3>
+                        <div class="integration-item">
+                            <div class="integration-info">
+                                <i class="fab fa-discord"></i>
+                                <div>
+                                    <h4>Discord Webhook</h4>
+                                    <p>Get real-time notifications about key activations</p>
+                                </div>
+                            </div>
+                            <input type="url" class="form-input" placeholder="Discord webhook URL" id="discordWebhook">
+                            <button class="btn-secondary" onclick="saveDiscordWebhook()">Save</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Subscription</h3>
+                        <div class="subscription-info">
+                            <div class="current-plan">
+                                <h4 id="currentPlan">Free Plan</h4>
+                                <p id="planDetails">1 Project, 10 Keys, Standard Obfuscation</p>
+                            </div>
+                            <button class="btn-primary" onclick="showUpgradeModal()">Upgrade Plan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals will be added here -->
+    <div id="modalContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

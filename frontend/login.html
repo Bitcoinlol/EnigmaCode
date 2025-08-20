@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EnigmaCode</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="auth-particles"></div>
+        </div>
+        
+        <div class="auth-content">
+            <div class="auth-header">
+                <a href="index.html" class="auth-brand">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>EnigmaCode</span>
+                </a>
+            </div>
+            
+            <div class="auth-form-container">
+                <div class="auth-form-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your EnigmaCode account</p>
+                </div>
+                
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username or Email</label>
+                        <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username or email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-options">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="remember" name="remember">
+                                <span class="checkmark"></span>
+                                Remember me
+                            </label>
+                            <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary btn-full btn-large">
+                        <span class="btn-text">Sign In</span>
+                        <span class="btn-loading hidden">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Signing in...
+                        </span>
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <div class="auth-alternative">
+                        <p>Don't have an account? <a href="register.html">Create one here</a></p>
+                    </div>
+                </form>
+                
+                <div id="errorMessage" class="error-message hidden"></div>
+                <div id="successMessage" class="success-message hidden"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            
+            // Show loading state
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: formData.get('username'),
+                        password: formData.get('password')
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store token
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Show success message
+                    successDiv.textContent = 'Login successful! Redirecting to dashboard...';
+                    successDiv.classList.remove('hidden');
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    throw new Error(data.error || 'Login failed');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            } finally {
+                // Reset button state
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.classList.remove('fa-eye');
+                toggleBtn.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.classList.remove('fa-eye-slash');
+                toggleBtn.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

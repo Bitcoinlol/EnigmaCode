@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnigmaCode - Advanced Software Licensing & Obfuscation</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/landing.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>EnigmaCode</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#docs">Documentation</a>
+                <a href="login.html" class="btn-secondary">Login</a>
+                <a href="register.html" class="btn-primary">Get Started</a>
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Advanced Software
+                    <span class="gradient-text">Licensing & Obfuscation</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Protect your Lua scripts with military-grade obfuscation, real-time licensing validation, 
+                    and comprehensive analytics. Built for developers who demand the highest level of security.
+                </p>
+                <div class="hero-buttons">
+                    <a href="register.html" class="btn-primary btn-large">
+                        <i class="fas fa-rocket"></i>
+                        Start Free Trial
+                    </a>
+                    <a href="#features" class="btn-secondary btn-large">
+                        <i class="fas fa-play"></i>
+                        View Demo
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">10M+</div>
+                        <div class="stat-label">Validations</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Developers</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-preview">
+                    <div class="code-header">
+                        <div class="code-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="code-title">script.lua</span>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line">
+                            <span class="line-number">1</span>
+                            <span class="code-text">-- Original Code</span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">2</span>
+                            <span class="code-text"><span class="keyword">local</span> <span class="variable">message</span> = <span class="string">"Hello World"</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">3</span>
+                            <span class="code-text"><span class="function">print</span>(<span class="variable">message</span>)</span>
+                        </div>
+                        <div class="code-separator">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>EnigmaCode Processing</span>
+                        </div>
+                        <div class="code-line obfuscated">
+                            <span class="line-number">1</span>
+                            <span class="code-text">local _0x1a2b3c=_0x4d5e6f("SGVsbG8gV29ybGQ=")</span>
+                        </div>
+                        <div class="code-line obfuscated">
+                            <span class="line-number">2</span>
+                            <span class="code-text">_0x7g8h9i(_0x1a2b3c)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Features</h2>
+                <p>Everything you need to protect and monetize your software</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <h3>Multi-Tier Obfuscation</h3>
+                    <p>Standard and Premium tiers with string encryption, variable renaming, control-flow flattening, and bytecode virtualization.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3>Advanced Licensing</h3>
+                    <p>Real-time key validation, expiration management, user linking, and IP restrictions with comprehensive tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Detailed usage graphs, error logs, tamper detection, and user behavior analytics with exportable reports.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3>Anti-Tamper Protection</h3>
+                    <p>Integrity checks, global banning system, and silent failure modes to prevent reverse engineering attempts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast API</h3>
+                    <p>Sub-100ms response times, 99.9% uptime SLA, and global CDN distribution for optimal performance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-webhook"></i>
+                    </div>
+                    <h3>Webhook Integration</h3>
+                    <p>Discord notifications, custom webhooks, and real-time alerts for key events and security incidents.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Choose the plan that fits your needs</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">0</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i>1 Project</li>
+                        <li><i class="fas fa-check"></i>10 Keys</li>
+                        <li><i class="fas fa-check"></i>Standard Obfuscation</li>
+                        <li><i class="fas fa-check"></i>Basic Analytics</li>
+                        <li><i class="fas fa-times"></i>Premium Features</li>
+                    </ul>
+                    <a href="register.html" class="btn-secondary btn-full">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Standard</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">29</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i>10 Projects</li>
+                        <li><i class="fas fa-check"></i>1,000 Keys</li>
+                        <li><i class="fas fa-check"></i>Standard Obfuscation</li>
+                        <li><i class="fas fa-check"></i>Advanced Analytics</li>
+                        <li><i class="fas fa-check"></i>Discord Integration</li>
+                    </ul>
+                    <a href="register.html" class="btn-primary btn-full">Start Trial</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Premium</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">99</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i>Unlimited Projects</li>
+                        <li><i class="fas fa-check"></i>Unlimited Keys</li>
+                        <li><i class="fas fa-check"></i>Premium Obfuscation</li>
+                        <li><i class="fas fa-check"></i>Full Analytics Suite</li>
+                        <li><i class="fas fa-check"></i>Priority Support</li>
+                    </ul>
+                    <a href="register.html" class="btn-primary btn-full">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-brand">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>EnigmaCode</span>
+                    </div>
+                    <p>Advanced software licensing and obfuscation platform for modern developers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#docs">Documentation</a>
+                        <a href="#">API Reference</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Contact</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Security</a>
+                        <a href="#">Compliance</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 EnigmaCode. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/landing.js"></script>
+</body>
+</html>
