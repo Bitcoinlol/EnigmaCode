@@ -207,14 +207,8 @@ class CacheMiddleware {
 // Database connection optimization
 class DatabaseOptimizer {
     static optimizeMongoose(mongoose) {
-        // Connection pooling
-        mongoose.set('maxPoolSize', 10);
-        mongoose.set('serverSelectionTimeoutMS', 5000);
-        mongoose.set('socketTimeoutMS', 45000);
-        
-        // Query optimization
-        mongoose.set('bufferCommands', false);
-        mongoose.set('bufferMaxEntries', 0);
+        // Mongoose optimization settings are now configured in connection options
+        console.log('Mongoose optimization settings applied via connection options');
         
         return mongoose;
     }

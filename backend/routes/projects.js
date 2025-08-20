@@ -7,6 +7,8 @@ const { authenticateToken } = require('../middleware/auth');
 const obfuscator = require('../../obfuscation-engine/obfuscator');
 const webhookService = require('../services/webhook');
 
+const router = express.Router();
+
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({
