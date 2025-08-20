@@ -1,0 +1,33 @@
+# Netlify configuration for EnigmaCode Platform
+# Note: This is for frontend-only deployment. Full-stack deployment requires Railway/Render/Heroku
+
+[build]
+  publish = "frontend"
+  command = "echo 'Static frontend build - backend requires separate deployment'"
+
+[build.environment]
+  NODE_ENV = "production"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-backend-domain.railway.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[dev]
+  command = "npm run dev"
+  port = 3000
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: enigmacode-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: enigmacode-mongodb
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: LOADER_INTEGRITY_KEY
+        generateValue: true
+
+  - type: pserv
+    name: enigmacode-mongodb
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile.mongo
+    disk:
+      name: mongodb-data
+      mountPath: /data/db
+      sizeGB: 1
