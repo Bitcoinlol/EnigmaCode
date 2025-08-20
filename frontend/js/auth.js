@@ -48,24 +48,20 @@ class AuthManager {
     }
 
     // Login user
-    async login(credentials) {
+    async login(userData) {
         try {
             const response = await fetch(`${this.apiBase}/auth/login`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(credentials)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
             });
 
-            // Check if response is JSON
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 throw new Error('Server returned non-JSON response. Please check if the API server is running.');
             }
 
             const data = await response.json();
-
             if (response.ok) {
                 this.token = data.token;
                 this.user = data.user;
@@ -74,6 +70,37 @@ class AuthManager {
                 return data;
             } else {
                 throw new Error(data.error || 'Login failed');
+            }
+        } catch (error) {
+            if (error.name === 'SyntaxError') {
+                throw new Error('API server is not responding. Please check if the backend is running.');
+            }
+            throw error;
+        }
+    }
+
+    async loginWithKey(keyData) {
+        try {
+            const response = await fetch(`${this.apiBase}/auth/login-key`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(keyData)
+            });
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server returned non-JSON response. Please check if the API server is running.');
+            }
+
+            const data = await response.json();
+            if (response.ok) {
+                this.token = data.token;
+                this.user = data.user;
+                localStorage.setItem('authToken', this.token);
+                localStorage.setItem('user', JSON.stringify(this.user));
+                return data;
+            } else {
+                throw new Error(data.error || 'Invalid license key');
             }
         } catch (error) {
             if (error.name === 'SyntaxError') {

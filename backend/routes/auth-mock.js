@@ -71,7 +71,89 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Mock login endpoint
+// Mock login with key endpoint
+router.post('/login-key', async (req, res) => {
+  try {
+    const { key } = req.body;
+
+    if (!key) {
+      return res.status(400).json({ error: 'License key is required' });
+    }
+
+    // Validate key format
+    if (key.length < 10) {
+      return res.status(400).json({ error: 'Invalid key format' });
+    }
+
+    // Determine subscription tier based on key prefix
+    let subscriptionTier = 'free';
+    let expiresIn = '30d';
+    
+    if (key.startsWith('FREE-')) {
+      subscriptionTier = 'free';
+      expiresIn = '30d';
+    } else if (key.startsWith('PREMIUM-')) {
+      subscriptionTier = 'premium';
+      expiresIn = '365d';
+    } else if (key.startsWith('PRO-')) {
+      subscriptionTier = 'pro';
+      expiresIn = '365d';
+    }
+
+    // Create or find user based on key
+    let user = await mockDb.findUserByKey(key);
+    if (!user) {
+      // Create new user for this key
+      user = await mockDb.createUser({
+        username: `User_${key.slice(-8)}`,
+        email: `user_${key.slice(-8)}@enigmacode.com`,
+        password: await bcrypt.hash(key, 12),
+        licenseKey: key,
+        subscription: { tier: subscriptionTier }
+      });
+    }
+
+    if (!user.isActive || user.isBanned) {
+      return res.status(401).json({ error: 'Account disabled' });
+    }
+
+    // Update last login
+    user.lastLogin = new Date();
+
+    // Log login
+    await mockDb.logEvent('key_login', user._id, null, null, {
+      ip: req.ip,
+      userAgent: req.get('User-Agent'),
+      keyUsed: key.substring(0, 8) + '...'
+    });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, keyTier: subscriptionTier },
+      process.env.JWT_SECRET || 'fallback-secret',
+      { expiresIn }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        subscription: user.subscription,
+        stats: user.stats,
+        keyExpiry: subscriptionTier === 'free' ? '30 days' : '1 year'
+      }
+    });
+  } catch (error) {
+    console.error('Key login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Mock login endpoint (legacy)
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;

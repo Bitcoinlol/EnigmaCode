@@ -46,6 +46,13 @@ class MockDatabase {
         return this.users.get(id) || null;
     }
 
+    async findUserByKey(licenseKey) {
+        for (let user of this.users.values()) {
+            if (user.licenseKey === licenseKey) return user;
+        }
+        return null;
+    }
+
     // Analytics operations
     async logEvent(eventType, userId, projectId, keyId, metadata) {
         const event = {
